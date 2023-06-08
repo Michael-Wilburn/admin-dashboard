@@ -7,7 +7,7 @@ export default function Auth() {
   const [loading, setLoading] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [active, setActive] = useState(false);
+  const [recovery, setRecovery] = useState(false);
 
   useEffect(()=>{
     
@@ -16,7 +16,21 @@ export default function Auth() {
         if(res.data.session){
           navigate('/');
         }
-      })
+    }).catch(error =>{
+      console.log(error)
+    })
+
+    supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event == "PASSWORD_RECOVERY") {
+        const newPassword = prompt("What would you like your new password to be?");
+        const { data, error } = await supabase.auth
+          .updateUser({ password: newPassword })
+ 
+        if (data) alert("Password updated successfully!")
+        if (error) alert("There was an error updating your password.")
+      }
+    })
+
   },[])
 
   const handleLogin = async (event) => {
@@ -36,6 +50,15 @@ export default function Auth() {
     setLoading(false)
   }
 
+  const handleRecovery = async(event) =>{
+    event.preventDefault()
+    setLoading(true)
+    const res = await supabase.auth.resetPasswordForEmail(email);
+    console.log(res);
+    setLoading(false);
+    setRecovery(false);
+  }
+ 
   return (
     <div className="hero min-h-screen bg-base-200">
       <div className="hero-content flex-col">
@@ -43,13 +66,41 @@ export default function Auth() {
       <div className="divider">*******</div>
         <div className="text-center lg:text-center" >
           <div className='card w-96 bg-base-100 shadow-xl'>
+            {recovery ? 
+            <form onSubmit={handleRecovery} className="card-body">
+            <h3 className="text-4xl font-bold mb-6">Recuperar contraseña</h3>
+              <div className="form-control">
+                <label className="label">
+                  Ingresa tu correo electrónico para recuperar tu contraseña.
+                </label>
+                <input
+                  className="input input-bordered input-primary input-md w-full max-w-xs text-center"
+                  type="email"
+                  placeholder="Correo electrónico"
+                  value={email}
+                  required={true}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+              <div className="form-control mt-6 flex-row justify-between">
+                <button className="btn btn-outline btn-primary" onClick={()=>{setRecovery(false)}} >
+                  <span>Cancelar</span>
+                </button>
+                <button disabled={loading} className="btn btn-outline btn-primary" onClick={()=>{handleRecovery}}>
+                  {loading ? <span className="loading loading-spinner"></span> : <span>Enviar email</span>}
+                </button>
+              </div>
+            </form>
+            
+              :
+
             <form onSubmit={handleLogin} className="card-body">
             <h2 className="text-4xl font-bold mb-6">Login</h2>
               <div className="form-control">
                 <input
                   className="input input-bordered input-primary input-md w-full max-w-xs"
                   type="email"
-                  placeholder="Correo electrónico o número de teléfono"
+                  placeholder="Correo electrónico"
                   value={email}
                   required={true}
                   onChange={(e) => setEmail(e.target.value)}
@@ -65,7 +116,7 @@ export default function Auth() {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               <label className="label text-center">
-              <a href="#" className="label-text-alt link link-hover">¿Olvidaste tu contraseña?</a>
+              <span href="#" onClick={()=>{setRecovery(true)}} className="label-text-alt link link-hover">¿Olvidaste tu contraseña?</span>
               </label>
               </div>
               <div className="form-control mt-6">
@@ -74,6 +125,7 @@ export default function Auth() {
                 </button>
               </div>
             </form>
+            }
           </div>
         </div>
       </div>
