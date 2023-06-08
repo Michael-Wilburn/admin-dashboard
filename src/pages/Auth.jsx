@@ -1,6 +1,7 @@
 import { useState, useEffect} from 'react'
 import { supabase } from '../supabase/supabaseClient'
 import { useNavigate } from "react-router-dom";
+import logo from '../assets/LogoNegocioMW.svg';
 
 export default function Auth() {
   const navigate = useNavigate();
@@ -62,9 +63,9 @@ export default function Auth() {
   return (
     <div className="hero min-h-screen bg-base-200">
       <div className="hero-content flex-col">
-      <h1 className="text-4xl font-bold mb-6">Automotores MW</h1>
-      <div className="divider">*******</div>
-        <div className="text-center lg:text-center" >
+      <img src={logo} className="w-96 " />
+      <div className="divider"></div>
+        <div className="text-center lg:text-center mt-6" >
           <div className='card w-96 bg-base-100 shadow-xl'>
             {recovery ? 
             <form onSubmit={handleRecovery} className="card-body">
