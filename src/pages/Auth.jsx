@@ -2,6 +2,9 @@ import { useState, useEffect} from 'react'
 import { supabase } from '../supabase/supabaseClient'
 import { useNavigate } from "react-router-dom";
 import logo from '../assets/LogoNegocioMW.svg';
+import { ReactNotifications } from 'react-notifications-component'
+import { Store } from 'react-notifications-component';
+import 'react-notifications-component/dist/theme.css'
 
 export default function Auth() {
   const navigate = useNavigate();
@@ -11,7 +14,6 @@ export default function Auth() {
   const [recovery, setRecovery] = useState(false);
 
   useEffect(()=>{
-    
     supabase.auth.getSession()
       .then((res)=> {
         if(res.data.session){
@@ -20,18 +22,6 @@ export default function Auth() {
     }).catch(error =>{
       console.log(error)
     })
-
-    supabase.auth.onAuthStateChange(async (event, session) => {
-      if (event == "PASSWORD_RECOVERY") {
-        const newPassword = prompt("What would you like your new password to be?");
-        const { data, error } = await supabase.auth
-          .updateUser({ password: newPassword })
- 
-        if (data) alert("Password updated successfully!")
-        if (error) alert("There was an error updating your password.")
-      }
-    })
-
   },[])
 
   const handleLogin = async (event) => {
@@ -44,7 +34,20 @@ export default function Auth() {
     })
   
     if (error) {
-      alert(error.error_description || error.message);
+      const msg = error.message;
+      Store.addNotification({
+        title: "Error",
+        message: msg,
+        type: "danger",
+        insert: "top",
+        container: "top-center",
+        animationIn: ["animate__animated", "animate__fadeIn"],
+        animationOut: ["animate__animated", "animate__fadeOut"],
+        dismiss: {
+          duration: 1500,
+          onScreen: true
+        }
+      });
     } else {
       navigate('/');
     }
@@ -54,7 +57,7 @@ export default function Auth() {
   const handleRecovery = async(event) =>{
     event.preventDefault()
     setLoading(true)
-    const res = await supabase.auth.resetPasswordForEmail(email);
+    const res = await supabase.auth.resetPasswordForEmail(email, {redirectTo: 'http://localhost:5173/recovery'})
     console.log(res);
     setLoading(false);
     setRecovery(false);
@@ -63,6 +66,7 @@ export default function Auth() {
   return (
     <div className="hero min-h-screen bg-base-200">
       <div className="hero-content flex-col">
+      <ReactNotifications />
       <img src={logo} className="w-96 " />
       <div className="divider"></div>
         <div className="text-center lg:text-center mt-6" >

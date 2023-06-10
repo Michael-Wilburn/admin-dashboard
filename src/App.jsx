@@ -4,6 +4,7 @@ import {Routes, Route, useNavigate} from 'react-router-dom'
 import Auth from './pages/Auth'
 import Home from './pages/Home'
 import NotFound from './pages/NotFound'
+import Recovery from './pages/Recovery'
 import { supabase } from './supabase/supabaseClient'
 
 function App() {
@@ -19,10 +20,12 @@ function App() {
 
   return (
     <div className='App'>
+    
     <Routes>
       <Route path="/" element={<Home/>}/>
       <Route path="/login" element={<Auth/>}/>
       <Route path="*" element={<NotFound/>}/>
+      <Route path="/recovery" element={<Recovery/>}/>
     </Routes>
     </div>
   )

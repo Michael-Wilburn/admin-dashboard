@@ -1,23 +1,35 @@
-/**
- * Step 1: Send the user an email to get a password reset token.
- * This email contains a link which sends the user back to your application.
- */
-const { data, error } = await supabase.auth
-  .resetPasswordForEmail('user@email.com')
+import {useEffect} from 'react'
+import { supabase } from '../supabase/supabaseClient'
+import { useNavigate } from "react-router-dom";
 
-/**
- * Step 2: Once the user is redirected back to your application,
- * ask the user to reset their password.
- */
- useEffect(() => {
-   supabase.auth.onAuthStateChange(async (event, session) => {
-     if (event == "PASSWORD_RECOVERY") {
-       const newPassword = prompt("What would you like your new password to be?");
-       const { data, error } = await supabase.auth
-         .updateUser({ password: newPassword })
 
-       if (data) alert("Password updated successfully!")
-       if (error) alert("There was an error updating your password.")
-     }
-   })
- }, [])
+export default function Recovery() {
+  const navigate = useNavigate();
+  const recuperar = async() =>{
+    const newPassword = prompt("What would you like your new password to be?");
+    const { data, error } = await supabase.auth
+      .updateUser({ password: newPassword })
+
+    if (data) { 
+      alert("Password updated successfully!")
+      supabase.auth.signOut()
+      navigate('/login')
+    }
+    if (error) alert("There was an error updating your password.")
+    
+  }
+
+  useEffect(()=>{
+    supabase.auth.onAuthStateChange((event, session)=>{
+      if(event === 'PASSWORD_RECOVERY'){
+        recuperar()
+      }
+    })
+  },[])
+
+    return(
+    <div>
+        <h1>Actualice su contraseña</h1>
+    </div>
+    )
+}
