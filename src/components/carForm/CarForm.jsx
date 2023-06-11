@@ -1,5 +1,6 @@
 import { SelectMenu} from 'evergreen-ui'
 import { useState } from 'react'
+import FilesUploader from '../filesUploader/FilesUploader'
 
 export default function CarForm() {
     const [selected, setSelected] = useState(null)
@@ -19,16 +20,6 @@ export default function CarForm() {
                     <option value="SUV">SUV</option>
                     <option value="VAN">VAN</option>
                 </select>
-                {/* <SelectMenu
-                    title="Tipo de vehículo"
-                    options={['HATCHBACK', 'MOTO', 'PICK-UP', 'SEDAN', 'SUV','VAN'].map((label) => ({ label, value: label }))}
-                    hasFilter={false}
-                    hasTitle={false}
-                    selected={selected}
-                    onSelect={(item) => setSelected(item.value)}
-                >
-                    <button>{selected || 'Tipo de Vehículo...'}</button>
-                </SelectMenu> */}
             </div>
             <div className="container my-3">
                 <input className="input input-bordered input-primary w-full max-w-xs" type="text" name="brand"
@@ -59,7 +50,8 @@ export default function CarForm() {
                     placeholder="Precio Info" id="infoPrice-car" required/>
             </div>
             <div className="container my-3">
-                <input type="file" className="file-input w-full max-w-xs" />
+                {/* <input type="file" className="file-input w-full max-w-xs" /> */}
+                <FilesUploader />
             </div>
                 <div className="card-actions">
                 <button id="btn-car-safe" className="btn btn-success">Guardar</button>

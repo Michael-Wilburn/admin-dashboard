@@ -3,6 +3,7 @@ import { supabase } from "../supabase/supabaseClient"
 import { useNavigate } from "react-router-dom";
 import CarForm from "../components/carForm/CarForm";
 import Navbar from "../components/navbar/Navbar";
+import Footer from "../components/footer/Footer";
 
 export default function Home() {
     const navigate = useNavigate();
@@ -20,6 +21,7 @@ export default function Home() {
     <div>
         <Navbar />
         <CarForm />
+        <Footer />
     </div>
     )
 }

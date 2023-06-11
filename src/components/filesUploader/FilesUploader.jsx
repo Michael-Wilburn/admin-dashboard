@@ -1,7 +1,7 @@
 import {useCallback,useState} from 'react'
 import { Pane, FileUploader, FileCard } from 'evergreen-ui'
 
-export default function FileUploader() {
+export default function FilesUploader() {
   const [files, setFiles] = useState([])
   const [fileRejections, setFileRejections] = useState([])
   const handleChange = useCallback((files) => setFiles([files[0]]), [])
@@ -14,9 +14,9 @@ export default function FileUploader() {
     <Pane maxWidth={654}>
       <FileUploader
         label="Upload File"
-        description="You can upload 1 file. File can be up to 50 MB."
+        description="You can upload 10 file. File can be up to 50 MB."
         maxSizeInBytes={50 * 1024 ** 2}
-        maxFiles={1}
+        maxFiles={10}
         onChange={handleChange}
         onRejected={handleRejected}
         renderFile={(file) => {
