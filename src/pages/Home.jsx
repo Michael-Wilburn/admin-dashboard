@@ -1,6 +1,7 @@
 import { useEffect } from "react"
 import { supabase } from "../supabase/supabaseClient"
 import { useNavigate } from "react-router-dom";
+import CarForm from "../components/carForm/CarForm";
 
 export default function Home() {
     const navigate = useNavigate();
@@ -23,6 +24,7 @@ export default function Home() {
     return(
     <div>
         <h1>Home</h1>
+        <CarForm />
         <button onClick={()=>supabase.auth.signOut()}>Cerrar Sesión</button>
     </div>
     )
