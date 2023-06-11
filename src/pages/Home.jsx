@@ -2,6 +2,7 @@ import { useEffect } from "react"
 import { supabase } from "../supabase/supabaseClient"
 import { useNavigate } from "react-router-dom";
 import CarForm from "../components/carForm/CarForm";
+import Navbar from "../components/navbar/Navbar";
 
 export default function Home() {
     const navigate = useNavigate();
@@ -14,18 +15,11 @@ export default function Home() {
             } 
           })
     },[])
-    useEffect(()=>{
-      supabase.auth.onAuthStateChange(async (event, session) => {
-        if (event == "PASSWORD_RECOVERY") {
-          navigate('/recovery')
-        }
-      })
-    },[])
+
     return(
     <div>
-        <h1>Home</h1>
+        <Navbar />
         <CarForm />
-        <button onClick={()=>supabase.auth.signOut()}>Cerrar Sesión</button>
     </div>
     )
 }
