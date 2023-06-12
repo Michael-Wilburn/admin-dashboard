@@ -8,6 +8,7 @@ import Recovery from './pages/Recovery'
 import { supabase } from './supabase/supabaseClient'
 import { AuthProvider } from './context/authContext/AuthContext'
 
+
 function App() {
   const navigate = useNavigate();
 
@@ -20,6 +21,7 @@ function App() {
   },[])
 
   return (
+    
     <AuthProvider>
       <div className='App'>
       <Routes>
