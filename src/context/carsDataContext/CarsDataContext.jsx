@@ -4,19 +4,49 @@ import { useState, createContext} from 'react';
 const CarsDataContext = createContext();
 
 export function CarsDataProvider({ children }) {
-    const [data, setData] = useState()
+    const [data, setData] = useState([])
+    const [check, setCheck] = useState([]);
+    const [isLoaded, setIsLoaded] = useState(false);
  
-    const getData = async () =>{
-        const result = await supabase.from('vehicules').select();
-        console.log(result)
+    const getResponse =()=> {
+        supabase.from('vehicules').select()
+        .then((r)=>{
+            console.log(r);
+            setData(r.data);
+            setCheck(r.data.map(car => ({id:car.id, web:car.web, marketplace:car.marketplace})));
+            setIsLoaded(true);
+        })
+        .catch((e) => {
+            setIsLoaded(false);
+            console.log(e);
+        });
     }
-    getData();
+
     
+    const orderByYear = () =>{
+        supabase.from('vehicules').select().order('year', { ascending: true })
+        .then((r)=>{
+            console.log(r);
+            setData(r.data);
+            setCheck(r.data.map(car => ({id:car.id, web:car.web, marketplace:car.marketplace})));
+            setIsLoaded(true);
+    
+        })
+        .catch((e) => {
+            setIsLoaded(false);
+            console.log(e);
+        });
+
+    }
+
+    // function getKeycheckbox() {
+    //     let states = data.map(car => ({id:car.id, web:car.web, marketplace:car.marketplace}));
+    //     return states;
+    // }
+    
+
   return (
-    <CarsDataContext.Provider
-      value={{getData}}>
-      {children}
-    </CarsDataContext.Provider>
+    <CarsDataContext.Provider value={{data,getResponse,isLoaded, check, setCheck ,orderByYear}}>{children}</CarsDataContext.Provider>
   );
 }
 

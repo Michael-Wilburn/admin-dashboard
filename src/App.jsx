@@ -7,7 +7,7 @@ import NotFound from './pages/NotFound'
 import Recovery from './pages/Recovery'
 import { supabase } from './supabase/supabaseClient'
 import { AuthProvider } from './context/authContext/AuthContext'
-
+import {CarsDataProvider} from './context/carsDataContext/CarsDataContext';
 
 function App() {
   const navigate = useNavigate();
@@ -21,18 +21,18 @@ function App() {
   },[])
 
   return (
-    
+    <CarsDataProvider>
     <AuthProvider>
-      <div className='App'>
-      <Routes>
-        <Route path="/" element={<Home/>}/>
-        <Route path="/login" element={<Auth/>}/>
-        <Route path="*" element={<NotFound/>}/>
-        <Route path="/recovery" element={<Recovery/>}/>
-      </Routes>
-      </div>
+        <div className='App'>
+        <Routes>
+          <Route path="/" element={<Home/>}/>
+          <Route path="/login" element={<Auth/>}/>
+          <Route path="*" element={<NotFound/>}/>
+          <Route path="/recovery" element={<Recovery/>}/>
+        </Routes>
+        </div>
     </AuthProvider>
-    
+    </CarsDataProvider>
   )
 }
 

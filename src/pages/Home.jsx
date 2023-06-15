@@ -5,26 +5,24 @@ import CarForm from "../components/carForm/CarForm";
 import Navbar from "../components/navbar/Navbar";
 import Footer from "../components/footer/Footer";
 import Table from "../components/table/Table";
-import {CarsDataProvider} from '../context/carsDataContext/CarsDataContext';
-import CarsDataContext from "../context/carsDataContext/CarsDataContext";
+
 
 export default function Home() {
-    const data = useContext(CarsDataContext);
-    
-
     const navigate = useNavigate();
-    useEffect(()=>{
-        supabase.auth.onAuthStateChange((event, session)=>{
-            if(event === 'PASSWORD_RECOVERY'){navigate('/')}
 
-            if(!session & (event === 'SIGNED_OUT' || event === 'INITIAL_SESSION')){
-              navigate('/login');
-            } 
-        })
+    useEffect(()=>{
+      supabase.auth.onAuthStateChange((event, session)=>{
+        if(event === 'PASSWORD_RECOVERY'){navigate('/')}
+
+        if(!session & (event === 'SIGNED_OUT' || event === 'INITIAL_SESSION')){
+          navigate('/login');
+        } 
+      })
+
     },[])
 
     return(
-      <CarsDataProvider>
+      
         <div className="drawer">
           <input id="my-drawer" type="checkbox" className="drawer-toggle" />
           <div className="drawer-content">
@@ -39,7 +37,7 @@ export default function Home() {
             <CarForm/>
           </div>
         </div>
-      </CarsDataProvider>
+    
     // <div>
     //     <Navbar />
     //     <div className="flex flex-row">
