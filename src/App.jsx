@@ -8,6 +8,7 @@ import Recovery from './pages/Recovery'
 import { supabase } from './supabase/supabaseClient'
 import { AuthProvider } from './context/authContext/AuthContext'
 import {CarsDataProvider} from './context/carsDataContext/CarsDataContext';
+import {FormProvider} from './context/formContext/formContext'
 
 function App() {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ function App() {
   },[])
 
   return (
+    <FormProvider>
     <CarsDataProvider>
     <AuthProvider>
         <div className='App'>
@@ -33,6 +35,7 @@ function App() {
         </div>
     </AuthProvider>
     </CarsDataProvider>
+    </FormProvider>
   )
 }
 

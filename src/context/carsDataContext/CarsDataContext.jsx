@@ -22,7 +22,7 @@ export function CarsDataProvider({ children }) {
         });
     }
 
-    
+
     const orderByYear = () =>{
         supabase.from('vehicules').select().order('year', { ascending: true })
         .then((r)=>{
@@ -38,12 +38,6 @@ export function CarsDataProvider({ children }) {
         });
 
     }
-
-    // function getKeycheckbox() {
-    //     let states = data.map(car => ({id:car.id, web:car.web, marketplace:car.marketplace}));
-    //     return states;
-    // }
-    
 
   return (
     <CarsDataContext.Provider value={{data,getResponse,isLoaded, check, setCheck ,orderByYear}}>{children}</CarsDataContext.Provider>
